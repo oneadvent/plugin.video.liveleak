@@ -11,8 +11,13 @@ def CATEGORIES():
         addDir('Iraq','browse?channel_token=e8a_1302956438',1,'')
         addDir('Afghanistan','browse?channel_token=79f_1302956483',1,'')
         addDir('Entertainment','browse?channel_token=51a_1302956523',1,'')
+        addDir('Search','browse?q=',1,'')
+        
                        
 def INDEX(url):
+	if url=="browse?q=":
+	  searchString = addSearch()
+	  url="browse?q="+searchString
 	after = url
 	url = BASE + url
         req = urllib2.Request(url)
@@ -79,14 +84,22 @@ def addLink(name,url,iconimage,urlType):
         liz=xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
         liz.setInfo( type="Video", infoLabels={ "Title": name } )
         liz.setProperty('IsPlayable','true')
-        if urlType == "youtube":
-	  ok=xbmc.executebuiltin("XBMC.PlayMedia(plugin://plugin.video.youtube/?action=play_video&videoid=XecLsVXi6oM)")
-	else:
-	  ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
+	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
         return ok
 
 
-
+def addSearch():
+	searchStr = ''
+	keyboard = xbmc.Keyboard(searchStr, 'Search')
+	keyboard.doModal()
+	if (keyboard.isConfirmed()==False):
+	  return
+	searchStr=keyboard.getText()
+	if len(searchStr) == 0:
+	  return
+	else:
+	  return searchStr
+	  
 def addDir(name,url,mode,iconimage):
         u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         ok=True
@@ -128,7 +141,7 @@ elif mode==1:
         
 elif mode==2:
         print ""+url
-        INDEX(url)
+        addSearch()
 
 
 
