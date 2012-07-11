@@ -48,7 +48,7 @@ def INDEX(url):
 	  response.close()
 	  match=re.compile('file: "(.+?)",').findall(link)
 	  for url in match:
-                addLink(name,url,'')
+                addLink(name,url,thumbnail)
 	
 	  
 def INDEX2(url):
