@@ -4,13 +4,13 @@ import urllib,urllib2,re,xbmcplugin,xbmcgui
 BASE = "http://www.liveleak.com/"
 def CATEGORIES():
         addDir('Popular','browse',1,'')
-        addDir('News & Politics','c/news',1,'')
-        addDir('Yoursay','c/yoursay',1,'')
-        addDir('Must See','c/must_see',1,'')
-        addDir('Iraq','c/iraq',1,'')
-        addDir('Afghanistan','c/afghanistan',1,'')
-        addDir('Entertainment','c/entertainment',1,'')
         addDir('Featured','browse?featured=1',1,'')
+        addDir('News & Politics','browse?channel_token=04c_1302956196',1,'')
+        addDir('Yoursay','browse?channel_token=1b3_1302956579',1,'')
+        addDir('Must See','browse?channel_token=9ee_1303244161',1,'')
+        addDir('Iraq','browse?channel_token=e8a_1302956438',1,'')
+        addDir('Afghanistan','browse?channel_token=79f_1302956483',1,'')
+        addDir('Entertainment','browse?channel_token=51a_1302956523',1,'')
                        
 def INDEX(url):
 	after = url
@@ -20,25 +20,15 @@ def INDEX(url):
         response = urllib2.urlopen(req)
         link=response.read()
         response.close()
-        if after[0] == 'b':
-	  try:
-	    appdg = after.split('&')[1]
-	    before = after.split('&')[0]
-	    appdg = int(appdg.split('=')[1]) + 1
-	    newURL = before + "&page=" + str(appdg)
-	  except:
-	    newURL = after + "?i=1&page=2"
-	    appdg = 2
-	elif after[0] == 'c':
-	  try:
-	    appdg = after.split('#')[1]
-	    before = after.split('#')[0]
-	    appdg = int(appdg.split('=')[1]) + 1
-	    newURL = before + "#item_page=" + str(appdg)
-	  except:
-	    newURL = after + "#item_page=2"
-	    appdg = 2
-	addDir("Page " + str(appdg), newURL, 1, "")
+	try:
+	  appdg = after.split('&')[1]
+	  before = after.split('&')[0]
+	  appdg = int(appdg.split('=')[1]) + 1
+	  newURL = before + "&page=" + str(appdg)
+	except:
+	  newURL = after + "&page=2"
+	  appdg = 2
+	addDir("Go To Page " + str(appdg), newURL, 1, "")
         match=re.compile('<a href="(.+?)"><img class="thumbnail_image" src="(.+?)" alt="(.+?)"').findall(link)
         for url,thumbnail,name in match:
 	  req = urllib2.Request(url)
