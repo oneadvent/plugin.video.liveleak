@@ -38,26 +38,11 @@ def INDEX(url):
 	  response.close()
 	  match=re.compile('file: "(.+?)",').findall(link)
 	  for url in match:
-                addLink(name,url,thumbnail)
-	
-	  
-def INDEX2(url):
-        req = urllib2.Request(url)
-        req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-        response = urllib2.urlopen(req)
-        link=response.read()
-        response.close()
-        match=re.compile(' <a href="(.+?)"><img class="thumbnail_image" src="(.+?)" alt="(.+?)"').findall(link)
-        for url,thumbnail,name in match:
-	  req = urllib2.Request(url)
-	  req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-	  response = urllib2.urlopen(req)
-	  link=response.read()
-	  response.close()
-	  match=re.compile('src="http://www.youtube.com/embed/(.+?)?rel=0').findall(link)
-	  for url in match:
+                addLink(name,url,thumbnail,"")
+          match=re.compile('src="http://www.youtube.com/embed/(.+?)?rel=0').findall(link)
+          for url in match:
 	    youtubeurl = 'plugin://plugin.video.youtube/?action=play_video&videoid=%s' % url
-	    addLink(name,youtubeurl,'')
+	    addLink(name,youtubeurl,thumbnail,"")
                 
 def VIDEOLINKS(url,name):
         req = urllib2.Request(url)
@@ -67,7 +52,7 @@ def VIDEOLINKS(url,name):
         response.close()
         match=re.compile('file: "(.+?)",').findall(link)
         for url in match:
-                addLink(name,url,'')
+                addLink(name,url,'',"")
         
 
                 
@@ -89,15 +74,17 @@ def get_params():
                                 
         return param
 
-
-
-
-def addLink(name,url,iconimage):
+def addLink(name,url,iconimage,urlType):
         ok=True
         liz=xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
         liz.setInfo( type="Video", infoLabels={ "Title": name } )
-        ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
+        liz.setProperty('IsPlayable','true')
+        if urlType == "youtube":
+	  ok=xbmc.executebuiltin("XBMC.PlayMedia(plugin://plugin.video.youtube/?action=play_video&videoid=XecLsVXi6oM)")
+	else:
+	  ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=url,listitem=liz)
         return ok
+
 
 
 def addDir(name,url,mode,iconimage):
@@ -141,7 +128,7 @@ elif mode==1:
         
 elif mode==2:
         print ""+url
-        INDEX2(url)
+        INDEX(url)
 
 
 
