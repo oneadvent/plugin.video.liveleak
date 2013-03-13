@@ -3,11 +3,12 @@ import urllib,urllib2,re,xbmcplugin,xbmcgui
 #LiveLeak.com- by Oneadvent 2012.
 BASE = "http://www.liveleak.com/"
 def CATEGORIES():
-        addDir('Popular','browse',1,'')
+        addDir('Popular','browse?popular',1,'')
         addDir('Featured','browse?featured=1',1,'')
         addDir('News & Politics','browse?channel_token=04c_1302956196',1,'')
         addDir('Yoursay','browse?channel_token=1b3_1302956579',1,'')
         addDir('Must See','browse?channel_token=9ee_1303244161',1,'')
+        addDir('Syria','browse?channel_token=cf3_1304149308',1,'')
         addDir('Iraq','browse?channel_token=e8a_1302956438',1,'')
         addDir('Afghanistan','browse?channel_token=79f_1302956483',1,'')
         addDir('Entertainment','browse?channel_token=51a_1302956523',1,'')
